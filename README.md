@@ -55,7 +55,7 @@ A server implementation of the [Model Context Protocol (MCP)](https://github.com
 The server implements the following MCP methods:
 
 * **`resources/list`**:  Lists all available resources (HarperDB tables and custom resources).
-* **`resources/get`**:  Retrieves data for a specific resource based on its URI.
+* **`resources/read`**:  Retrieves data for a specific resource based on its URI.
 
 A single endpoint, `/mcp` handles all requests. The server uses JSON-RPC 2.0 for communication.
 * **Request Format**:  All requests are sent as JSON-RPC 2.0 formatted JSON objects.
@@ -157,7 +157,7 @@ Sample Request:
 {
 	"jsonrpc": "2.0",
 	"id": 2,
-	"method": "resources/get",
+	"method": "resources/read",
 	"params": {
 		"uri": "http://localhost:9926/Customers"
 	}
@@ -214,7 +214,7 @@ Sample Response:
 
 ###   Querying Tables
 
-When retrieving data from tables using `resources/get`, you can use optional query parameters in the URI to filter data.
+When retrieving data from tables using `resources/read`, you can use optional query parameters in the URI to filter data.
 
 * **Filtering:** Use `attribute=value` pairs to filter based on column values. The comparator is always "equals".
     * Example: `http://localhost:9925/my_table?name=John&city=NewYork`

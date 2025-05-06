@@ -1,19 +1,20 @@
 import { Resource } from 'harperdb';
-import type { JSONRPCRequest, JSONRPCResponse, JSONRPCError } from '@modelcontextprotocol/sdk/types.js';
+import type { JSONRPCRequest, JSONRPCResponse, JSONRPCError, ReadResourceRequest } from '@modelcontextprotocol/sdk/types.js';
 import { resourceList } from './mcpResources/resourceList.js';
-import { resourceGet } from './mcpResources/resourceGet.js';
+import { resourceRead } from './mcpResources/resourceRead.js';
+import { MCPMethods } from '../constants/index.js';
 
 class MCPHandler extends Resource {
 	async post(body: JSONRPCRequest): Promise<JSONRPCResponse | JSONRPCError> {
 		const { jsonrpc, id, method, params } = body;
 
-		let result;
+		let result: Record<string, any>;
 		switch (method) {
-			case 'resources/list':
+			case MCPMethods.RESOURCES_LIST:
 				result = resourceList();
 				break;
-			case 'resources/get':
-				result = await resourceGet(params);
+			case MCPMethods.RESOURCES_GET:
+				result = await resourceRead(params as ReadResourceRequest['params']);
 				break;
 			default:
 				return {

@@ -23,14 +23,19 @@ const formatTableForContext = ({ Resource: resource }: ResourceInfo): MCPResourc
 	return {
 		uri: `${process.env.HOST}/${resource.name}`,
 		name: resource.name,
-		description: `${resource.tableName} table with attributes: ${attrs}. Results can be filtered with optional query parameters.`,
+		description: `${resource.tableName} table with attributes: ${attrs}.`,
 		mimeType: 'application/json',
 	};
 };
 
 const formatResourceForContext = ({ Resource: resource, path }: ResourceInfo): MCPResource => {
+	let resourcePath = path;
+	if (resourcePath !== resource.name) {
+		resourcePath = `${path}/${resource.name}`;
+	}
+
 	return {
-		uri: `${process.env.HOST}/${path}/${resource.name}`,
+		uri: `${process.env.HOST}/${resourcePath}`,
 		name: resource.name,
 		description: 'Custom REST Resource.',
 		mimeType: 'application/json',

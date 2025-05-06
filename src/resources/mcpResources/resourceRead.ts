@@ -2,13 +2,13 @@ import { server, logger, databases } from 'harperdb';
 import type { ReadResourceResult, ReadResourceRequest, TextResourceContents } from '@modelcontextprotocol/sdk/types.js';
 import type { ErrorResponse, ParsedUri, QueryCondition, ResourceInfo } from '../../types/index.js';
 
-export const resourceGet = async (params: ReadResourceRequest): Promise<ReadResourceResult | ErrorResponse> => {
+export const resourceRead = async (params: ReadResourceRequest['params']): Promise<ReadResourceResult | ErrorResponse> => {
 	try {
 		if (!params?.uri) {
 			return {
 				error: {
 					code: -32602,
-					message: 'Must include request body with uri field in request params.',
+					message: 'Must provide properly formatted JSONRPC body with uri in params.',
 				},
 			};
 		}
