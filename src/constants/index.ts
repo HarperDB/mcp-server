@@ -1,4 +1,4 @@
 export enum MCPMethods {
-    RESOURCES_LIST = 'resources/list',
-    RESOURCES_GET = 'resources/read',
+	RESOURCES_LIST = 'resources/list',
+	RESOURCES_GET = 'resources/read',
 }

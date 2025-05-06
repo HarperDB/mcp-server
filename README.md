@@ -1,29 +1,29 @@
-#   Harper MCP Server
+# Harper MCP Server
 
 A server implementation of the [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol), designed to expose data in HarperDB as structured "Resources" accessible via standardized JSON-RPC calls.
 
->  **Note:** This project currently requires the use of the `export-resources` branch of HarperDB. See [this pull request](https://github.com/HarperDB/harperdb/pull/2590) for details.
+> **Note:** This project currently requires the use of the `export-resources` branch of HarperDB. See [this pull request](https://github.com/HarperDB/harperdb/pull/2590) for details.
 
 ---
 
-##   Features
+## Features
 
-* MCP-compatible API server for Harper
-* Predefined static capabilities endpoint (`/capabilities.json`) 
-* Provides read-only access to data from Harper tables and custom resources
-* Supports filtering data in Harper tables using query parameters
-* Handles pagination (limit, start) for table data retrieval
-* Provides standardized error responses
+- MCP-compatible API server for Harper
+- Predefined static capabilities endpoint (`/capabilities.json`)
+- Provides read-only access to data from Harper tables and custom resources
+- Supports filtering data in Harper tables using query parameters
+- Handles pagination (limit, start) for table data retrieval
+- Provides standardized error responses
 
 ---
 
-##   Getting Started
+## Getting Started
 
-###   Prerequisites
+### Prerequisites
 
-* [Harper](https://docs.harperdb.io/docs/deployments/install-harperdb/) stack installed globally.
-* Ensure HarperDB is configured and running with necessary databases and schemas.
-* Environment variable `HOST` should be set to the base URL of your server (e.g., `http://localhost:9926`). This is used to construct resource URIs.
+- [Harper](https://docs.harperdb.io/docs/deployments/install-harperdb/) stack installed globally.
+- Ensure HarperDB is configured and running with necessary databases and schemas.
+- Environment variable `HOST` should be set to the base URL of your server (e.g., `http://localhost:9926`). This is used to construct resource URIs.
 
 ### Running locally
 
@@ -42,55 +42,56 @@ A server implementation of the [Model Context Protocol (MCP)](https://github.com
 
 1.  Build and start the server:
 
-	```bash
-	npm run server
-	```
+    ```bash
+    npm run server
+    ```
 
 ---
 
-##   API
+## API
 
-###   MCP Methods
+### MCP Methods
 
 The server implements the following MCP methods:
 
-* **`resources/list`**:  Lists all available resources (HarperDB tables and custom resources).
-* **`resources/read`**:  Retrieves data for a specific resource based on its URI.
+- **`resources/list`**: Lists all available resources (HarperDB tables and custom resources).
+- **`resources/read`**: Retrieves data for a specific resource based on its URI.
 
 A single endpoint, `/mcp` handles all requests. The server uses JSON-RPC 2.0 for communication.
-* **Request Format**:  All requests are sent as JSON-RPC 2.0 formatted JSON objects.
-* **Response Format**:  The server responds with JSON-RPC 2.0 formatted JSON objects.
-* **Error Handling**:  The server returns standardized error responses.
 
-###   Resource URIs
+- **Request Format**: All requests are sent as JSON-RPC 2.0 formatted JSON objects.
+- **Response Format**: The server responds with JSON-RPC 2.0 formatted JSON objects.
+- **Error Handling**: The server returns standardized error responses.
 
-* **Tables:** Resources representing HarperDB tables are accessed via URIs like:
+### Resource URIs
 
-    ```
-    {HOST}/{table_name}
-    ```
+- **Tables:** Resources representing HarperDB tables are accessed via URIs like:
 
-    * Example:  `http://localhost:9925/my_table`
+  ```
+  {HOST}/{table_name}
+  ```
 
-* **Table Rows:** Individual rows within a table can be accessed using the primary key:
+  - Example: `http://localhost:9925/my_table`
 
-    ```
-    {HOST}/{table_name}/{primary_key_value}
-    ```
+- **Table Rows:** Individual rows within a table can be accessed using the primary key:
 
-    * Example: `http://localhost:9925/my_table/123`  (where 123 is the primary key value)
+  ```
+  {HOST}/{table_name}/{primary_key_value}
+  ```
 
-* **Custom Resources:** Custom resources (if any) are accessed via URIs defined by their registered path:
+  - Example: `http://localhost:9925/my_table/123` (where 123 is the primary key value)
 
-    ```
-    {HOST}/{path}/{resource_name}
-    ```
+- **Custom Resources:** Custom resources (if any) are accessed via URIs defined by their registered path:
 
-    * Example: `http://localhost:9925/custom/my_resource`
+  ```
+  {HOST}/{path}/{resource_name}
+  ```
+
+  - Example: `http://localhost:9925/custom/my_resource`
 
 ## Usage
 
-###   1. Listing Resources
+### 1. Listing Resources
 
 POST `/mcp`
 
@@ -147,7 +148,7 @@ Sample Response:
 }
 ```
 
-###   2. Get resources data
+### 2. Get resources data
 
 POST `/mcp`
 
@@ -212,16 +213,16 @@ Sample Response:
 }
 ```
 
-###   Querying Tables
+### Querying Tables
 
 When retrieving data from tables using `resources/read`, you can use optional query parameters in the URI to filter data.
 
-* **Filtering:** Use `attribute=value` pairs to filter based on column values. The comparator is always "equals".
-    * Example: `http://localhost:9925/my_table?name=John&city=NewYork`
-* **Pagination:** Use `limit` and `start` parameters for pagination.
-    * `limit`:  Maximum number of results to return.
-    * `start`:  Offset to start returning results from.
-    * Example: `http://localhost:9925/my_table?limit=10&start=20`
+- **Filtering:** Use `attribute=value` pairs to filter based on column values. The comparator is always "equals".
+  - Example: `http://localhost:9925/my_table?name=John&city=NewYork`
+- **Pagination:** Use `limit` and `start` parameters for pagination.
+  - `limit`: Maximum number of results to return.
+  - `start`: Offset to start returning results from.
+  - Example: `http://localhost:9925/my_table?limit=10&start=20`
 
 ### Error Responses
 
@@ -229,17 +230,17 @@ The server returns standardized JSON-RPC error responses:
 
 ```json
 {
-    "jsonrpc": "2.0",
-    "id": 2,
-    "error": {
-        "code": -32602,
-        "message": "Invalid params."
-    }
+	"jsonrpc": "2.0",
+	"id": 2,
+	"error": {
+		"code": -32602,
+		"message": "Invalid params."
+	}
 }
 ```
 
 Error Codes:
 
-* `-32601`: Method not found.
-* `-32602`: Invalid params.
-* `-32603`: Internal server error.
+- `-32601`: Method not found.
+- `-32602`: Invalid params.
+- `-32603`: Internal server error.

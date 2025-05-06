@@ -7,7 +7,8 @@
 		"build": "tsc",
 		"dev": "tsc; harperdb dev .",
 		"server": "tsc; harperdb run .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"postinstall": "npm link harperdb"
 	},
 	"prettier": "@harperdb/code-guidelines/prettier",
 	"author": "HarperDB, Inc.",

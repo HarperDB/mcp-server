@@ -1,5 +1,10 @@
 import { Resource } from 'harperdb';
-import type { JSONRPCRequest, JSONRPCResponse, JSONRPCError, ReadResourceRequest } from '@modelcontextprotocol/sdk/types.js';
+import type {
+	JSONRPCRequest,
+	JSONRPCResponse,
+	JSONRPCError,
+	ReadResourceRequest,
+} from '@modelcontextprotocol/sdk/types.js';
 import { resourceList } from './mcpResources/resourceList.js';
 import { resourceRead } from './mcpResources/resourceRead.js';
 import { MCPMethods } from '../constants/index.js';

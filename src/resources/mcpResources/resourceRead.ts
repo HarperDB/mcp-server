@@ -2,7 +2,9 @@ import { server, logger, databases } from 'harperdb';
 import type { ReadResourceResult, ReadResourceRequest, TextResourceContents } from '@modelcontextprotocol/sdk/types.js';
 import type { ErrorResponse, ParsedUri, QueryCondition, ResourceInfo } from '../../types/index.js';
 
-export const resourceRead = async (params: ReadResourceRequest['params']): Promise<ReadResourceResult | ErrorResponse> => {
+export const resourceRead = async (
+	params: ReadResourceRequest['params']
+): Promise<ReadResourceResult | ErrorResponse> => {
 	try {
 		if (!params?.uri) {
 			return {
@@ -44,7 +46,7 @@ export const resourceRead = async (params: ReadResourceRequest['params']): Promi
 
 		return { contents: [] };
 	} catch (error) {
-		logger.error('Error processing request:', error);
+		logger.error('Error processing request:', (error as any).message);
 
 		return {
 			error: {
