@@ -1,0 +1,7 @@
+rest: true
+jsResource:
+  files: dist/resources/index.js
+loadEnv:
+  files: '.env'
+static:
+  files: 'web/*'
