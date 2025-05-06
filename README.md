@@ -138,8 +138,8 @@ Sample Response:
 				"mimeType": "application/json"
 			},
 			{
-				"uri": "http://localhost:9926/test/a/b/testing",
-				"name": "testing",
+				"uri": "http://localhost:9926/api/test",
+				"name": "test",
 				"description": "REST Resource.",
 				"mimeType": "application/json"
 			}
