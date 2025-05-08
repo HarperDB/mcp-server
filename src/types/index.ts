@@ -11,6 +11,7 @@ export interface ResourceInfo {
 		tableName?: string;
 		attributes?: TableAttr[];
 		get: Function;
+		search: Function;
 	};
 	path: string;
 }

@@ -1,4 +1,4 @@
-import { server, logger, databases } from 'harperdb';
+import { server, logger } from 'harperdb';
 import type { ReadResourceResult, ReadResourceRequest, TextResourceContents } from '@modelcontextprotocol/sdk/types.js';
 import type { ErrorResponse, ParsedUri, QueryCondition, ResourceInfo } from '../../types/index.js';
 
@@ -20,7 +20,7 @@ export const resourceRead = async (
 
 		const tableResource = server.resources.get(resourceName)?.Resource;
 		if (tableResource?.databaseName) {
-			const data = await queryHarperDB(tableResource.databaseName, resourceName, conditions, limit, start);
+			const data = await queryHarperDB(tableResource, conditions, limit, start);
 
 			const response = {
 				contents: formatTableData(resourceName, data, tableResource.primaryKey),
@@ -31,7 +31,7 @@ export const resourceRead = async (
 
 		const customResource = server.resources.getMatch(path.substring(1));
 		if (customResource) {
-			const data = await getResourceData(customResource, query);
+			const data = await getResourceData(customResource.Resource, query);
 
 			return {
 				contents: [
@@ -95,13 +95,12 @@ const parseRequestUri = (uri: string): ParsedUri => {
 };
 
 const queryHarperDB = async (
-	databaseName: string,
-	resourceName: string,
+	tableResource: ResourceInfo['Resource'],
 	conditions: QueryCondition[],
 	limit = 250,
 	start?: number
 ): Promise<Record<string, any>[]> => {
-	const results = await databases[databaseName][resourceName].search({
+	const results = await tableResource.search({
 		conditions,
 		limit,
 		offset: start,
@@ -116,8 +115,18 @@ const queryHarperDB = async (
 	return output;
 };
 
-const getResourceData = async ({ Resource: resource }: ResourceInfo, query: URLSearchParams) => {
-	return await resource.get(query);
+const getResourceData = async (
+	resource: ResourceInfo['Resource'],
+	query: URLSearchParams
+): Promise<Record<string, any>[]> => {
+	try {
+		return await resource.search(query);
+	} catch (error) {
+		if ((error as any).statusCode === 405) {
+			return await resource.get(query);
+		}
+		throw error;
+	}
 };
 
 const formatTableData = (

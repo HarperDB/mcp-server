@@ -42,8 +42,8 @@ const formatResourceForContext = ({ Resource: resource, path }: ResourceInfo): M
 	};
 };
 
-const attributesToString = (attributes: TableAttr[]): string => {
-	const attrDesc = attributes
+const attributesToString = (attributes: TableAttr[]): string =>
+	attributes
 		.map((attr) => {
 			let type = attr.type;
 
@@ -56,6 +56,3 @@ const attributesToString = (attributes: TableAttr[]): string => {
 			return `${attr.name} ${typeString}`;
 		})
 		.join(', ');
-
-	return attrDesc;
-};

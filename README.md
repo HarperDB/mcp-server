@@ -23,30 +23,22 @@ A server implementation of the [Model Context Protocol (MCP)](https://github.com
 
 - [Harper](https://docs.harperdb.io/docs/deployments/install-harperdb/) stack installed globally.
 - Ensure HarperDB is configured and running with necessary databases and schemas.
-- Environment variable `HOST` should be set to the base URL of your server (e.g., `http://localhost:9926`). This is used to construct resource URIs.
+- Environment variable `HOST` should be set to the base URL of your server. This is used to construct resource URIs.
 
-### Running locally
+### Deploying to Harper
 
-1.  Clone the repository and navigate to the project directory.
+The Harper `mcp-server` is published to NPM and can be installed using [Harper's Operation API](https://docs.harperdb.io/docs/developers/operations-api/components).
 
-    ```bash
-    git clone https://github.com/HarperDB/harper-mcp-server.git
-    cd harper-mcp-server
-    ```
+i.e.
 
-1.  Install dependencies:
+`POST https://harper-server.com:9925`
 
-    ```bash
-    npm install
-    ```
-
-1.  Build and start the server:
-
-    ```bash
-    npm run server
-    ```
-
----
+```json
+{
+	"operation": "deploy_component",
+	"package": "@harperdb/mcp-server@1.0.0"
+}
+```
 
 ## API
 
@@ -81,7 +73,7 @@ A single endpoint, `/mcp` handles all requests. The server uses JSON-RPC 2.0 for
 
   - Example: `http://localhost:9925/my_table/123` (where 123 is the primary key value)
 
-- **Custom Resources:** Custom resources (if any) are accessed via URIs defined by their registered path:
+- **Custom Resources:** Custom resources are accessed via URIs defined by their registered path:
 
   ```
   {HOST}/{path}/{resource_name}
