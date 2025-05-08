@@ -16,35 +16,39 @@ export const resourceRead = async (
 		}
 
 		const { uri } = params;
-		const { resourceName, conditions, path, query, limit, start } = parseRequestUri(uri);
+		const { resourceName, conditions, path, limit, start } = parseRequestUri(uri);
 
-		const tableResource = server.resources.get(resourceName)?.Resource;
-		if (tableResource?.databaseName) {
-			const data = await queryHarperDB(tableResource, conditions, limit, start);
+		const resourceMatch = server.resources.getMatch(path.substring(1));
+
+		if (!resourceMatch) {
+			return { contents: [] };
+		}
+
+		const data = await queryHarperDB(resourceMatch.Resource, conditions, limit, start);
+
+		if (resourceMatch?.Resource.databaseName) {
+			const tableData: Record<string, any>[] = [];
+
+			for await (const item of data) {
+				tableData.push(item);
+			}
 
 			const response = {
-				contents: formatTableData(resourceName, data, tableResource.primaryKey),
+				contents: formatTableData(resourceName, tableData, resourceMatch.Resource.primaryKey),
 			};
 
 			return response;
 		}
 
-		const customResource = server.resources.getMatch(path.substring(1));
-		if (customResource) {
-			const data = await getResourceData(customResource.Resource, query);
-
-			return {
-				contents: [
-					{
-						uri,
-						mimeType: 'application/json',
-						text: JSON.stringify(data),
-					},
-				],
-			};
-		}
-
-		return { contents: [] };
+		return {
+			contents: [
+				{
+					uri,
+					mimeType: 'application/json',
+					text: JSON.stringify(data),
+				},
+			],
+		};
 	} catch (error) {
 		logger.error('Error processing request:', (error as any).message);
 
@@ -87,7 +91,6 @@ const parseRequestUri = (uri: string): ParsedUri => {
 	return {
 		resourceName,
 		conditions,
-		query: url.searchParams,
 		path: url.pathname,
 		limit,
 		start,
@@ -95,30 +98,17 @@ const parseRequestUri = (uri: string): ParsedUri => {
 };
 
 const queryHarperDB = async (
-	tableResource: ResourceInfo['Resource'],
+	resource: ResourceInfo['Resource'],
 	conditions: QueryCondition[],
 	limit = 250,
 	start?: number
-): Promise<Record<string, any>[]> => {
-	const results = await tableResource.search({
+) => {
+	const query = {
 		conditions,
 		limit,
 		offset: start,
-	});
+	};
 
-	const output: Record<string, any>[] = [];
-
-	for await (const item of results) {
-		output.push(item);
-	}
-
-	return output;
-};
-
-const getResourceData = async (
-	resource: ResourceInfo['Resource'],
-	query: URLSearchParams
-): Promise<Record<string, any>[]> => {
 	try {
 		return await resource.search(query);
 	} catch (error) {

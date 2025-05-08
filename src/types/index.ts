@@ -32,7 +32,6 @@ export interface QueryCondition {
 export interface ParsedUri {
 	resourceName: string;
 	conditions: QueryCondition[];
-	query: URLSearchParams;
 	path: string;
 	limit?: number;
 	start?: number;

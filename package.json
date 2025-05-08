@@ -1,5 +1,5 @@
 {
-	"name": "harper-mcp-server",
+	"name": "mcp-server",
 	"version": "1.0.0",
 	"description": "An MCP server providing an interface for MCP clients to access data within Harper.",
 	"type": "module",
