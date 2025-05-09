@@ -1,0 +1,25 @@
+{
+	"name": "mcp-server",
+	"version": "1.0.0",
+	"description": "An MCP server providing an interface for MCP clients to access data within Harper.",
+	"type": "module",
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc; harperdb dev .",
+		"server": "tsc; harperdb run .",
+		"format": "prettier --write .",
+		"postinstall": "npm link harperdb"
+	},
+	"prettier": "@harperdb/code-guidelines/prettier",
+	"author": "HarperDB, Inc.",
+	"license": "MIT",
+	"devDependencies": {
+		"@harperdb/code-guidelines": "^0.0.2",
+		"@modelcontextprotocol/sdk": "^1.11.0",
+		"@types/node": "^22.10.2",
+		"prettier": "^3.4.2",
+		"tsx": "^4.19.2",
+		"typescript": "^5.7.2"
+	},
+	"dependencies": {}
+}
