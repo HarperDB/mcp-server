@@ -1,6 +1,6 @@
 import { server, logger } from 'harperdb';
 import type { ReadResourceResult, ReadResourceRequest, TextResourceContents } from '@modelcontextprotocol/sdk/types.js';
-import type { ErrorResponse, ParsedUri, QueryCondition, ResourceInfo } from '../../types/index.js';
+import type { ErrorResponse, ParsedUri } from '../../types/index.js';
 
 export const resourceRead = async (
 	params: ReadResourceRequest['params']
@@ -16,7 +16,7 @@ export const resourceRead = async (
 		}
 
 		const { uri } = params;
-		const { resourceName, conditions, path, limit, start } = parseRequestUri(uri);
+		const { resourceName, conditions, path, limit, start: offset } = parseRequestUri(uri);
 
 		const resourceMatch = server.resources.getMatch(path.substring(1));
 
@@ -24,9 +24,13 @@ export const resourceRead = async (
 			return { contents: [] };
 		}
 
-		const data = await queryHarperDB(resourceMatch.Resource, conditions, limit, start);
+		const data = await resourceMatch.Resource.get({
+			conditions,
+			limit: limit ?? 250,
+			offset,
+		});
 
-		if (resourceMatch?.Resource.databaseName) {
+		if (resourceMatch.Resource.databaseName) {
 			const tableData: Record<string, any>[] = [];
 
 			for await (const item of data) {
@@ -95,28 +99,6 @@ const parseRequestUri = (uri: string): ParsedUri => {
 		limit,
 		start,
 	};
-};
-
-const queryHarperDB = async (
-	resource: ResourceInfo['Resource'],
-	conditions: QueryCondition[],
-	limit = 250,
-	start?: number
-) => {
-	const query = {
-		conditions,
-		limit,
-		offset: start,
-	};
-
-	try {
-		return await resource.search(query);
-	} catch (error) {
-		if ((error as any).statusCode === 405) {
-			return await resource.get(query);
-		}
-		throw error;
-	}
 };
 
 const formatTableData = (
