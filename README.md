@@ -2,7 +2,7 @@
 
 A server implementation of the [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol), designed to expose data in HarperDB as structured "Resources" accessible via standardized JSON-RPC calls.
 
-> **Note:** This project currently requires the use of the `export-resources` branch of HarperDB. See [this pull request](https://github.com/HarperDB/harperdb/pull/2590) for details.
+> **Note:** Requires HarperDB version 4.5.X10 or later.
 
 ---
 
@@ -22,7 +22,7 @@ A server implementation of the [Model Context Protocol (MCP)](https://github.com
 ### Prerequisites
 
 - [Harper](https://docs.harperdb.io/docs/deployments/install-harperdb/) stack installed globally.
-- Ensure HarperDB is configured and running with necessary databases and schemas.
+- Ensure HarperDB v4.5.10 or later is configured and running with necessary databases and schemas.
 - Environment variable `HOST` should be set to the base URL of your server. This is used to construct resource URIs.
 
 ### Deploying to Harper
@@ -39,6 +39,11 @@ i.e.
 	"package": "@harperdb/mcp-server@1.0.0"
 }
 ```
+
+## Security & Authentication
+
+Harper employs role-based, attribute-level security to ensure users access only authorized data. Requests to the server are authenticated using HarperDB's built-in authentication mechanisms, which include Basic Auth, JWT, and mTLS.
+See [Harper Security Docs](https://docs.harperdb.io/docs/developers/security/) for more details.
 
 ## API
 
