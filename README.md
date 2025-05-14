@@ -2,7 +2,7 @@
 
 A server implementation of the [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol), designed to expose data in HarperDB as structured "Resources" accessible via standardized JSON-RPC calls.
 
-> **Note:** Requires HarperDB version 4.5.X10 or later.
+> **Note:** Requires HarperDB version 4.5.10 or later.
 
 ---
 
