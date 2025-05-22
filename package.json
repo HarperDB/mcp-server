@@ -1,5 +1,5 @@
 {
-	"name": "mcp-server",
+	"name": "@harperdb/mcp-server",
 	"version": "1.0.0",
 	"description": "An MCP server providing an interface for MCP clients to access data within Harper.",
 	"type": "module",
@@ -21,5 +21,16 @@
 		"tsx": "^4.19.2",
 		"typescript": "^5.7.2"
 	},
-	"dependencies": {}
+	"main": "dist/resources/index.js",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/HarperDB/mcp-server.git"
+	},
+	"keywords": [
+		"mcp"
+	],
+	"bugs": {
+		"url": "https://github.com/HarperDB/mcp-server/issues"
+	},
+	"homepage": "https://github.com/HarperDB/mcp-server#readme"
 }
