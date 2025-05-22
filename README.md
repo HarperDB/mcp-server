@@ -4,6 +4,9 @@ A server implementation of the [Model Context Protocol (MCP)](https://github.com
 
 > **Note:** Requires HarperDB version 4.5.10 or later.
 
+## What is Harper
+[Harper](https://www.harpersystems.dev/) is a Composable Application Platform that merges database, cache, app logic, and messaging into a single runtime. Components like this plug directly into Harper, letting you build and scale distributed services fast, without managing separate systems. Built for geo-distributed apps with low latency and high uptime by default.
+
 ---
 
 ## Features
